@@ -14,7 +14,7 @@ jobs:
 
       - name: View Work Dir 
         run: |
-          pws
+          pwd
           ls -la
 
       - name: View current-context
