@@ -1,0 +1,26 @@
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: {{ .Values.mongodb.name }}
+spec:
+  members: {{ .Values.mongodb.members }}
+  type: ReplicaSet
+  version: "{{ .Values.mongodb.version }}"
+  security:
+    authentication:
+      modes: {{ toJson .Values.mongodb.authenticationModes }}
+  users:
+    - name: {{ .Values.mongodb.user.name }}
+      db: {{ .Values.mongodb.user.db }}
+      passwordSecretRef:
+        name: {{ .Values.mongodb.user.passwordSecretRef }}
+      roles:
+      {{- range .Values.mongodb.roles }}
+        - name: {{ .name }}
+          db: {{ .db }}
+      {{- end }}
+      scramCredentialsSecretName: {{ .Values.mongodb.user.passwordSecretRef }}
+  additionalMongodConfig:
+    storage.wiredTiger.engineConfig.journalCompressor: {{ .Values.mongodb.additionalMongodConfig.journalCompressor }}
+    net:
+      port: {{ .Values.mongodb.port }}

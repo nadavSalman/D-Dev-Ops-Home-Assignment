@@ -1,0 +1,21 @@
+# values.yaml
+
+mongodb:
+  name: devops-mongodb
+  members: 3
+  version: "6.0.5"
+  port: 40333
+  user:
+    name: my-user
+    db: admin
+    passwordSecretRef: my-user-password
+    password: Q1w2e3r4t5y6
+  roles:
+    - name: clusterAdmin
+      db: admin
+    - name: userAdminAnyDatabase
+      db: admin
+  authenticationModes:
+    - SCRAM
+  additionalMongodConfig:
+    journalCompressor: zlib
