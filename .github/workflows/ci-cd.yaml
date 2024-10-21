@@ -19,4 +19,5 @@ jobs:
 
       - name: View current-context
         run: |
-          k config current-context
+          kubectl config current-context
+          
