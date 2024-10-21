@@ -5,10 +5,30 @@
 
 
 
+## Create loca K8s cluster using Kind
+Prerequisite
+- Docker
+- [Kind](https://kind.sigs.k8s.io/) cli 
+    - Setup [kind cluster with Ingress Controller](https://kind.sigs.k8s.io/docs/user/ingress/), chose Nginx.
+
+
 
 
 
 ## Adding self-hosted runners
+![alt text](images/self-hosted-runner-01.png)
+![alt text](images/self-hosted-runner-02.png)
+
+```bash
+~/actions-runner
+❯ ./run.sh
+
+√ Connected to GitHub
+
+Current runner version: '2.320.0'
+2024-10-21 20:19:37Z: Listening for Jobs
+```
+![alt text](images/self-hosted-runner-03.png)
 
 
 
