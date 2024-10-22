@@ -3,3 +3,15 @@ adminPassword: "123456"
 nginx:
   tls:
     commonName: hub.devopsbypr.in
+
+ingress:
+  core:
+    ingressClassName: "nginx"
+    pathType: ImplementationSpecific
+    controller: default
+    hostname: core.harbor.domain
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
