@@ -2,7 +2,7 @@
 
 mongodb:
   name: devops-mongodb
-  members: 1
+  members: 3
   version: "6.0.5"
   port: 40333
   user:
