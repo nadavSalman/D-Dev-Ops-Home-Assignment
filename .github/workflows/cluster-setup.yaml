@@ -39,7 +39,7 @@ jobs:
       - name: Nginx Ingress Contoller
         run: |
           kubectl get namespace ingress-nginx || kubectl create namespace ingress-nginx
-          kubectl apply -f cluster-provisioning/kind-nginx-ingress-controller.yaml
+          kubectl apply -f cluster-provisioning/ingress-controller/kind-nginx-ingress-controller.yaml
 
       - name: Install MongoDB Community Operator
         run: |
