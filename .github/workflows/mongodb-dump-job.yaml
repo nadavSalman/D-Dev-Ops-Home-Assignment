@@ -10,6 +10,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Clean up old job
+        run: kubectl delete job mongodb-dump-data-job -n mongodb --ignore-not-found
+      
       - name: Deploy Job
         env:
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
