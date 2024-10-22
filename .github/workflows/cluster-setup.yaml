@@ -46,6 +46,8 @@ jobs:
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
+          helm upgrade --install harbor bitnami/harbor -n harbor -f cluster-provisioning/harbor/values.yaml --create-namespace
+
 
 
 

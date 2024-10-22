@@ -18,7 +18,7 @@ spec:
         - name: MONGODB_LOCAL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: local-uri-secret
+              name: local-mongodb-password
               key: MONGODB_LOCAL_PASSWORD
         command: ["bash"]
         args:
