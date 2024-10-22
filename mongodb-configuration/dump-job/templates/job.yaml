@@ -3,8 +3,8 @@ kind: Job
 metadata:
   name: mongodb-dump-data-job
 spec:
-  completions: {{ .Values.completions | default 3 }}
-  parallelism: {{ .Values.parallelism | default 1 }}
+  Parallelism:    1
+  Completions:    1
   template:
     spec:
       restartPolicy: Never

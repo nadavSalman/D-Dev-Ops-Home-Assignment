@@ -42,6 +42,11 @@ jobs:
             --set image.pullPolicy=IfNotPresent \
             --set ipam.mode=kubernetes
 
+      - name: Install Harbor 
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo update
+
 
 
   cluster-provisioning:
