@@ -362,3 +362,44 @@ config  248.00 KiB
 local    53.23 MiB
 devops-mongodb [direct: primary] sample_airbnb>
 ```
+
+
+Job Copleted :
+```bash
+~
+❯ k get pods -n mongodb
+NAME                                          READY   STATUS      RESTARTS   AGE
+devops-mongodb-0                              2/2     Running     0          160m
+devops-mongodb-1                              2/2     Running     0          159m
+devops-mongodb-2                              2/2     Running     0          159m
+mongodb-dump-data-job-gszdq                   0/1     Completed   0          2m35s
+mongodb-kubernetes-operator-97dcdd8f9-nj4rb   1/1     Running     0          8h
+tmp-mongosh                                   1/1     Running     0          18m
+
+~
+❯  k logs mongodb-dump-data-job-gszdq -n mongodb
+2024-10-22T23:01:28.643+0000    writing sample_airbnb.listingsAndReviews to archive on stdout
+2024-10-22T23:01:30.066+0000    [........................]  sample_airbnb.listingsAndReviews  101/5555  (1.8%)
+2024-10-22T23:01:33.218+0000    [###########.............]  sample_airbnb.listingsAndReviews  2771/5555  (49.9%)
+2024-10-22T23:01:36.218+0000    [######################..]  sample_airbnb.listingsAndReviews  5199/5555  (93.6%)
+2024-10-22T23:01:36.404+0000    [########################]  sample_airbnb.listingsAndReviews  5555/5555  (100.0%)
+2024-10-22T23:01:36.426+0000    done dumping sample_airbnb.listingsAndReviews (5555 documents)
+Primary Host : devops-mongodb-1.devops-mongodb-svc.mongodb.svc.cluster.local
+2024-10-22T23:01:37.745+0000    preparing collections to restore from
+2024-10-22T23:01:37.753+0000    reading metadata for sample_airbnb.listingsAndReviews from archive on stdin
+2024-10-22T23:01:37.864+0000    restoring sample_airbnb.listingsAndReviews from archive on stdin
+2024-10-22T23:01:40.730+0000    sample_airbnb.listingsAndReviews  20.8MB
+2024-10-22T23:01:43.729+0000    sample_airbnb.listingsAndReviews  38.1MB
+2024-10-22T23:01:46.729+0000    sample_airbnb.listingsAndReviews  38.1MB
+2024-10-22T23:01:49.729+0000    sample_airbnb.listingsAndReviews  50.2MB
+2024-10-22T23:01:52.730+0000    sample_airbnb.listingsAndReviews  59.0MB
+2024-10-22T23:01:55.729+0000    sample_airbnb.listingsAndReviews  77.4MB
+2024-10-22T23:01:58.729+0000    sample_airbnb.listingsAndReviews  90.0MB
+2024-10-22T23:02:00.436+0000    sample_airbnb.listingsAndReviews  90.0MB
+2024-10-22T23:02:00.436+0000    finished restoring sample_airbnb.listingsAndReviews (5555 documents, 0 failures)
+2024-10-22T23:02:00.437+0000    no indexes to restore for collection sample_airbnb.listingsAndReviews
+2024-10-22T23:02:00.437+0000    5555 document(s) restored successfully. 0 document(s) failed to restore.
+
+~
+❯
+```
