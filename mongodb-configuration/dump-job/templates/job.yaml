@@ -1,10 +1,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job-pod-failure-policy-example
+  name: mongodb-dump-data-job
 spec:
-  completions: {{ .Values.completions | default 12 }}
-  parallelism: {{ .Values.parallelism | default 3 }}
+  completions: {{ .Values.completions | default 3 }}
+  parallelism: {{ .Values.parallelism | default 1 }}
   template:
     spec:
       restartPolicy: Never
