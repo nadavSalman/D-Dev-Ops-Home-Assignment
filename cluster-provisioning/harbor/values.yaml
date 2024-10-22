@@ -4,6 +4,9 @@ expose:
   type: ingress
   ingress:
     hosts:
-      core: dropit-harbor.com
-      notary: dropit-harbor.com
-      trivy: dropit-harbor.com
+      core: dropit-harbor-core.com
+      notary: dropit-harbor-notary.com
+      trivy: dropit-harbor-trivy.com
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /
