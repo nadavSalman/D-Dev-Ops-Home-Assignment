@@ -16,7 +16,7 @@ jobs:
           
           if [ "$KIND_CONTEXT" == "kind-kind" ]; then
             echo "Context is already 'kind-kind'. Skipping cluster creation."
-            kubectl config use-context
+            kubectl config use-context kind-kind
           else
             echo "Context 'kind-kind' not exist. Creating the cluster..."
             kind create cluster --config kind-config/multi-nodes-ingress.yaml
