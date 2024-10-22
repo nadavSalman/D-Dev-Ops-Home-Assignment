@@ -13,6 +13,62 @@ Prerequisite
 - [Install cilium cli](https://docs.cilium.io/en/stable/installation/kind/)
 
 
+## Import Mising Post db data (`sample_airbnb.listingsAndReviews`)
+
+One of the component requirements is: "Import the provided ([Link for Dump](https://www.mongodb.com/docs/atlas/sample-data/sample-training/#std-label-sample-training)) MongoDB Dump into the MongoDB instance in the K8s cluster."
+
+To set up MongoDB for dumping the posts data into the MongoDB instance in the K8s cluster, I created a free-tier MongoDB cluster on MongoDB Atlas. Even though the cluster automatically imported sample data, the database and collection for the posts were missing. I had to find a solution to import this data from an open-source source. Below you can find the steps involved in performing the data import from json file.
+
+Get the json data :
+
+```bash
+curl -o listingsAndReviews.json  https://raw.githubusercontent.com/neelabalan/mongodb-sample-dataset/refs/heads/main/sample_airbnb/listingsAndReviews.json
+```
+Import data using mongoimport cli :
+
+```shell
+C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-database-tools-windows-x86_64-100.10.0\bin>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 7893-8CB2
+
+ Directory of C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-database-tools-windows-x86_64-100.10.0\bin
+
+10/22/2024  08:06 PM    <DIR>          .
+10/22/2024  08:02 PM    <DIR>          ..
+10/22/2024  08:02 PM        16,588,590 bsondump.exe
+10/22/2024  08:06 PM        99,656,721 listingsAndReviews.json
+10/22/2024  08:02 PM        23,243,614 mongodump.exe
+10/22/2024  08:02 PM        22,831,256 mongoexport.exe
+10/22/2024  08:02 PM        22,766,308 mongofiles.exe
+10/22/2024  08:02 PM        23,056,766 mongoimport.exe
+10/22/2024  08:02 PM        23,771,720 mongorestore.exe
+10/22/2024  08:02 PM        22,298,759 mongostat.exe
+10/22/2024  08:02 PM        21,782,277 mongotop.exe
+               9 File(s)    275,996,011 bytes
+               2 Dir(s)  906,911,125,504 bytes free
+
+C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-database-tools-windows-x86_64-100.10.0\bin>mongoimport.exe --drop --uri "mongodb+srv://**********:********@cluster01.ypl06.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01" --db "sample_airbnb" --collection "listingsAndReviews" --file listingsAndReviews.json
+2024-10-22T20:14:10.678+0300    connected to: mongodb+srv://[**REDACTED**]@cluster01.ypl06.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01
+2024-10-22T20:14:10.796+0300    dropping: sample_airbnb.listingsAndReviews
+2024-10-22T20:14:13.688+0300    [#####...................] sample_airbnb.listingsAndReviews     23.3MB/95.0MB (24.5%)
+2024-10-22T20:14:16.690+0300    [#####...................] sample_airbnb.listingsAndReviews     23.3MB/95.0MB (24.5%)
+2024-10-22T20:14:19.686+0300    [##########..............] sample_airbnb.listingsAndReviews     41.4MB/95.0MB (43.6%)
+2024-10-22T20:14:22.692+0300    [##########..............] sample_airbnb.listingsAndReviews     41.4MB/95.0MB (43.6%)
+2024-10-22T20:14:25.694+0300    [#############...........] sample_airbnb.listingsAndReviews     53.9MB/95.0MB (56.8%)
+2024-10-22T20:14:28.693+0300    [###############.........] sample_airbnb.listingsAndReviews     63.0MB/95.0MB (66.3%)
+2024-10-22T20:14:31.688+0300    [###############.........] sample_airbnb.listingsAndReviews     63.0MB/95.0MB (66.3%)
+2024-10-22T20:14:34.686+0300    [#####################...] sample_airbnb.listingsAndReviews     83.5MB/95.0MB (87.8%)
+2024-10-22T20:14:37.683+0300    [#####################...] sample_airbnb.listingsAndReviews     83.5MB/95.0MB (87.8%)
+2024-10-22T20:14:40.685+0300    [########################] sample_airbnb.listingsAndReviews     95.0MB/95.0MB (100.0%)
+2024-10-22T20:14:41.270+0300    [########################] sample_airbnb.listingsAndReviews     95.0MB/95.0MB (100.0%)
+2024-10-22T20:14:41.271+0300    5555 document(s) imported successfully. 0 document(s) failed to import.
+
+C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-database-tools-windows-x86_64-100.10.0\bin>
+```
+
+Validate imported data :
+![alt text](images/mongodb-import-sample_airbnb-db.png)
+
 
 
 
@@ -175,5 +231,18 @@ local   508.00 KiB
 devops-mongodb [direct: secondary] test>
 ```
 
+Test for local (With compus for example)
+
+```bash
+kubectl port-forward svc/devops-mongodb-svc 27017:40333 -n mongodb
+mongodb://***:***@localhost:27017
+```
 
 
+## MongoDB Dump & Restore 
+
+Local test for dump data :
+
+```bash
+
+```
