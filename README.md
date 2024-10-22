@@ -10,7 +10,7 @@ Prerequisite
 - Docker
 - [Kind](https://kind.sigs.k8s.io/) cli 
     - Setup [kind cluster with Ingress Controller](https://kind.sigs.k8s.io/docs/user/ingress/), chose Nginx. (There is a GitHub flow after settign self hosted agent)
-- [Install cilium cli](https://docs.cilium.io/en/stable/installation/kind/)
+- Optinal - [Install cilium cli](https://docs.cilium.io/en/stable/installation/kind/)
 
 
 ## Import Mising Post db data (`sample_airbnb.listingsAndReviews`)
@@ -65,6 +65,11 @@ C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-d
 
 C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-database-tools-windows-x86_64-100.10.0\bin>
 ```
+
+
+Prerequisite
+- Add Atlas cluster full URI as GitHub Action secret.
+
 
 Validate imported data :
 ![alt text](images/mongodb-import-sample_airbnb-db.png)
@@ -159,7 +164,7 @@ metadata:
   name: my-user-password
 type: Opaque
 stringData:
-  password: Q1w2e3r4t5y6
+  password: ***
 ---
 # Source: mongodb-community-setup/templates/mongodbcommunity.yaml
 apiVersion: mongodbcommunity.mongodb.com/v1
@@ -207,16 +212,16 @@ TEST SUITE: None
 ```bash
 ❯ k get secrets -n mongodb my-user-password -n mongodb -o json  | jq -r '.data | with_entries(.value |= @base64d)'
 {
-  "password": "Q1w2e3r4t5y6"
+  "password": "***"
 }
 
 ```
 
-### Test mongo Atlas connection from a kubernetes pod with mongosh
+### Test mongo Atlas connection from a Kubernetes Pod with mongosh
 ```bash
 ❯ kubectl run tmp-mongosh --image=rtsp/mongosh -n mongodb  --rm -it -- bash
 If you don't see a command prompt, try pressing enter.
-18:10:25 tmp-mongosh:/# mongosh mongodb://my-user:Q1w2e3r4t5y6@devops-mongodb-svc.mongodb.svc.cluster.local:40333
+18:10:25 tmp-mongosh:/# mongosh mongodb://my-user:***@devops-mongodb-svc.mongodb.svc.cluster.local:40333
 Current Mongosh Log ID: 671699e6a0c964d374fe6910
 Connecting to:          mongodb://<credentials>@devops-mongodb-svc.mongodb.svc.cluster.local:40333/?directConnection=true&appName=mongosh+2.3.2
 Using MongoDB:          6.0.5
@@ -239,10 +244,121 @@ mongodb://***:***@localhost:27017
 ```
 
 
-## MongoDB Dump & Restore 
+## MongoDB Dump & Restore (Inside K8s Pod)
 
-Local test for dump data :
+setup :
+```bash
+ kubectl run tmp-mongosh --image=rtsp/mongosh -n mongodb  --rm -it -- bash
+```
+
+Dump data (`mongodump`)
+```bash
+20:39:12 tmp-mongosh:/# mongodump --uri "mongodb+srv://nadavdevops:sQPUhIdPhOumv1pa@cluster01.ypl06.mongodb.net/sample_airbnb?retryWrites=true&w=majority&appName=Cluster01"  --archive > db.dump
+2024-10-22T20:39:24.570+0000    writing sample_airbnb.listingsAndReviews to archive on stdout
+2024-10-22T20:39:25.354+0000    [........................]  sample_airbnb.listingsAndReviews  0/5555  (0.0%)
+2024-10-22T20:39:28.352+0000    [#######.................]  sample_airbnb.listingsAndReviews  1693/5555  (30.5%)
+2024-10-22T20:39:31.352+0000    [######################..]  sample_airbnb.listingsAndReviews  5199/5555  (93.6%)
+2024-10-22T20:39:31.620+0000    [########################]  sample_airbnb.listingsAndReviews  5555/5555  (100.0%)
+2024-10-22T20:39:31.651+0000    done dumping sample_airbnb.listingsAndReviews (5555 documents)
+```
+
+Identifiy primary :
+```bash
+20:46:55 tmp-mongosh:/# PRIMARY_HOST=$(mongosh "mongodb://my-user:***@devops-mongodb-svc.mongodb.svc.cluster.local:40333" --quiet --eval "rs.status()" --json | jq -r '.members[] |
+>  select(.stateStr == "PRIMARY") | .name'  | cut -d':' -f1)
+20:47:13 tmp-mongosh:/# echo "Primary host: $PRIMARY_HOST"
+Primary host: devops-mongodb-1.devops-mongodb-svc.mongodb.svc.cluster.local
+```
+
+Load data (`mongorestore`)
+```bash
+20:47:33 tmp-mongosh:/# mongorestore --uri "mongodb://my-user:***@$PRIMARY_HOST:40333" --archive < db.dump
+2024-10-22T20:47:38.055+0000    preparing collections to restore from
+2024-10-22T20:47:38.070+0000    reading metadata for sample_airbnb.listingsAndReviews from archive on stdin
+2024-10-22T20:47:38.182+0000    restoring sample_airbnb.listingsAndReviews from archive on stdin
+2024-10-22T20:47:41.001+0000    sample_airbnb.listingsAndReviews  20.9MB
+2024-10-22T20:47:44.000+0000    sample_airbnb.listingsAndReviews  38.1MB
+2024-10-22T20:47:47.000+0000    sample_airbnb.listingsAndReviews  50.5MB
+2024-10-22T20:47:50.000+0000    sample_airbnb.listingsAndReviews  77.4MB
+2024-10-22T20:47:53.000+0000    sample_airbnb.listingsAndReviews  90.0MB
+2024-10-22T20:47:53.388+0000    sample_airbnb.listingsAndReviews  90.0MB
+2024-10-22T20:47:53.388+0000    finished restoring sample_airbnb.listingsAndReviews (5555 documents, 0 failures)
+2024-10-22T20:47:53.389+0000    no indexes to restore for collection sample_airbnb.listingsAndReviews
+2024-10-22T20:47:53.389+0000    5555 document(s) restored successfully. 0 document(s) failed to restore.
+20:47:53 tmp-mongosh:/# mongosh mongodb://my-user:***@devops-mongodb-svc.mongodb.svc.cluster.local:40333
+Current Mongosh Log ID: 67180faa8e8ebfa44ffe6910
+Connecting to:          mongodb://<credentials>@devops-mongodb-svc.mongodb.svc.cluster.local:40333/?directConnection=true&appName=mongosh+2.3.2
+Using MongoDB:          6.0.5
+Using Mongosh:          2.3.2
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+To help improve our products, anonymous usage data is collected and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+
+------
+   The server generated these startup warnings when booting
+   2024-10-22T20:23:39.815+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2024-10-22T20:23:42.603+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+   2024-10-22T20:23:42.604+00:00: vm.max_map_count is too low
+------
+
+devops-mongodb [direct: secondary] test> show dbs
+admin          192.00 KiB
+config         240.00 KiB
+local           53.13 MiB
+sample_airbnb   51.48 MiB
+devops-mongodb [direct: secondary] test>
+```
+
+
+### Example queries on the collection `sample_airbnb.listingsAndReviews`
+
+```sql
+db.listingsAndReviews.find({ "address.market": "New York" }).limit(5)
+db.listingsAndReviews.find({ "price": { $gte: 100, $lte: 200 } }).limit(5)
+devops-mongodb [direct: primary] sample_airbnb> db.listingsAndReviews.countDocuments()
+5555
+devops-mongodb [direct: primary] sample_airbnb>
+
+db.listingsAndReviews.find().sort({ price: 1 }).limit(5)
+
+```
+
+
+Delete sample_airbnb DB to test dump-job
 
 ```bash
+21:58:53 tmp-mongosh:/# PRIMARY_HOST=$(mongosh "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@devops-mongodb-svc.mongodb.svc.cluster.local:40333" --quiet --eval "rs.status()" --json | jq -r '.members[] | select(.stateStr == "PRIMARY") | .name' | cut -d':' -f1)
+Enter password: ************
+21:59:09 tmp-mongosh:/# mongosh mongodb://my-user:***@$PRIMARY_HOST:40333
+Current Mongosh Log ID: 6718204c8b2be33d16fe6910
+Connecting to:          mongodb://<credentials>@devops-mongodb-1.devops-mongodb-svc.mongodb.svc.cluster.local:40333/?directConnection=true&appName=mongosh+2.3.2
+Using MongoDB:          6.0.5
+Using Mongosh:          2.3.2
 
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2024-10-22T20:24:22.669+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2024-10-22T20:24:24.034+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+   2024-10-22T20:24:24.035+00:00: vm.max_map_count is too low
+------
+
+devops-mongodb [direct: primary] test> show dbs
+admin          192.00 KiB
+config         248.00 KiB
+local           53.23 MiB
+sample_airbnb   51.48 MiB
+devops-mongodb [direct: primary] test> use sample_airbnb
+switched to db sample_airbnb
+devops-mongodb [direct: primary] sample_airbnb> db.dropDatabase()
+{ ok: 1, dropped: 'sample_airbnb' }
+devops-mongodb [direct: primary] sample_airbnb> show dbs
+admin   192.00 KiB
+config  248.00 KiB
+local    53.23 MiB
+devops-mongodb [direct: primary] sample_airbnb>
 ```

@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-pod-failure-policy-example
+spec:
+  completions: {{ .Values.completions | default 12 }}
+  parallelism: {{ .Values.parallelism | default 3 }}
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: main
+        image: rtsp/mongosh
+        env:
+        - name: ATLAS_URI
+          valueFrom:
+            secretKeyRef:
+              name: atlas-uri-secret
+              key: ATLAS_URI
+        command: ["bash"]
+        args:
+        - -c
+        - |
+          # dump
+          mongodump --uri "$ATLAS_URI" --archive > db.dump
+
+          # load
+          MONGODB_LOCAL_PASSWORD=$(kubectl get secrets -n mongodb my-user-password -o json | jq -r '.data | with_entries(.value |= @base64d) | .password')
+          PRIMARY_HOST=$(mongosh "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@devops-mongodb-svc.mongodb.svc.cluster.local:40333" --quiet --eval "rs.status()" --json | jq -r '.members[] | select(.stateStr == "PRIMARY") | .name' | cut -d':' -f1)
+
+          # restore
+          mongorestore --uri "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@$PRIMARY_HOST:40333" --archive < db.dump
+  backoffLimit: 6
