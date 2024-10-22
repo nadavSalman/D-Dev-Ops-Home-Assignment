@@ -9,7 +9,8 @@
 Prerequisite
 - Docker
 - [Kind](https://kind.sigs.k8s.io/) cli 
-    - Setup [kind cluster with Ingress Controller](https://kind.sigs.k8s.io/docs/user/ingress/), chose Nginx.
+    - Setup [kind cluster with Ingress Controller](https://kind.sigs.k8s.io/docs/user/ingress/), chose Nginx. (There is a GitHub flow after settign self hosted agent)
+- [Install cilium cli](https://docs.cilium.io/en/stable/installation/kind/)
 
 
 
