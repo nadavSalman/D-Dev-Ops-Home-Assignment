@@ -14,5 +14,6 @@ jobs:
         env:
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
         run: |
-          helm upgrade --install dump-job mongodb-configuration/dump-job --set atlas.uri=$ATLAS_URI -n mongodb
+          MONGODB_LOCAL_PASSWORD=$(kubectl get secrets -n mongodb my-user-password -o json | jq -r '.data | with_entries(.value |= @base64d) | .password')
+          helm upgrade --install dump-job mongodb-configuration/dump-job --set atlas.uri=$ATLAS_URI --set local.uri=MONGODB_LOCAL_PASSWORD -n mongodb
 

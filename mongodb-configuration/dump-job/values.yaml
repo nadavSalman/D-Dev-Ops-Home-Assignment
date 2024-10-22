@@ -1,2 +1,8 @@
 atlas:
   uri: ""
+
+local:
+  uri: ""
+
+job:
+  name: "mongodb-dump-data-job"

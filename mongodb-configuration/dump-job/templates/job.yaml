@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mongodb-dump-data-job
+  name: {{ .Values.job.name }}
 spec:
   Parallelism:    1
   Completions:    1
@@ -17,6 +17,11 @@ spec:
             secretKeyRef:
               name: atlas-uri-secret
               key: ATLAS_URI
+        - name: MONGODB_LOCAL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: local-uri-secret
+              key: MONGODB_LOCAL_PASSWORD
         command: ["bash"]
         args:
         - -c
@@ -25,8 +30,8 @@ spec:
           mongodump --uri "$ATLAS_URI" --archive > db.dump
 
           # load
-          MONGODB_LOCAL_PASSWORD=$(kubectl get secrets -n mongodb my-user-password -o json | jq -r '.data | with_entries(.value |= @base64d) | .password')
           PRIMARY_HOST=$(mongosh "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@devops-mongodb-svc.mongodb.svc.cluster.local:40333" --quiet --eval "rs.status()" --json | jq -r '.members[] | select(.stateStr == "PRIMARY") | .name' | cut -d':' -f1)
+          echo "Primary Host : $PRIMARY_HOST"
 
           # restore
           mongorestore --uri "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@$PRIMARY_HOST:40333" --archive < db.dump
