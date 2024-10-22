@@ -14,5 +14,5 @@ jobs:
         env:
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
         run: |
-          helm upgrade --install dump-job mongodb-configuration/dump-job --set atlas.uri=$(echo -n "$ATLAS_URI" | base64) -n mongodb
+          helm upgrade --install dump-job mongodb-configuration/dump-job --set atlas.uri=$ATLAS_URI -n mongodb
 
