@@ -1,0 +1,56 @@
+name: Cluster Setup
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-cluster:
+    runs-on: self-hosted  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Validate current context and create cluster if needed
+        run: |
+          KIND_CONTEXT=$(kubectl config get-contexts | grep "kind-kind" | awk '{print $2}')
+          
+          if [ "$KIND_CONTEXT" == "kind-kind" ]; then
+            echo "Context is already 'kind-kind'. Skipping cluster creation."
+          else
+            echo "Context 'kind-kind' not exist. Creating the cluster..."
+            kind create cluster --config kind-config/multi-nodes-ingress.yaml
+          fi
+
+      - name: Validate cluster creation
+        run: |
+          echo "Validating cluster creation..."
+          if kubectl get nodes; then
+            echo "Cluster creation validated successfully!"
+          else
+            echo "Cluster creation failed!" >&2
+            exit 1
+
+  cluster-provisioning:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Nginx Ingress Contoller
+        run: |
+          kubectl get namespace ingress-nginx || kubectl create namespace ingress-nginx
+          kubectl apply -f cluster-provisioning/kind-nginx-ingress-controller.yaml
+
+      - name: Install MongoDB Community Operator
+        run: |
+          kubectl get namespace mongodb || kubectl create namespace mongodb
+          helm repo add mongodb-helm-charts https://mongodb.github.io/helm-charts
+          helm repo list
+          helm search repo  mongodb-helm-charts | grep community-operator
+          helm upgrade --install my-community-operator mongodb-helm-charts/community-operator --version 0.11.0 --namespace mongodb
+
+      - name: Deploy and Configure a MongoDB Resource
+        run: |
+          kubectl get namespace ingress-nginx || kubectl create namespace ingress-nginx
+          helm template   mongodb-community  mongodb-configuration/mongodb-community-setup/ -n mongodb
+          helm upgrade --install  mongodb-community  mongodb-configuration/mongodb-community-setup/ -n mongodb
