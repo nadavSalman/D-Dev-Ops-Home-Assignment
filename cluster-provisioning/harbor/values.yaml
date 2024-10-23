@@ -1,2 +1,5 @@
 externalURL: https://hub.devopsbypr.in
-adminPassword: "123456"
+adminPassword: "learningharbor"
+nginx:
+  tls:
+    commonName: hub.devopsbypr.in
