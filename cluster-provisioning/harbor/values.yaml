@@ -1,4 +1,50 @@
-externalURL: https://hub.devopsbypr.in
-adminPassword: "learningharbor"
-exposureType: "ingress"
-
+expose:
+  type: ingress # exposing Harbor at ingress
+  tls:
+    enabled: true # enabling tls secret
+    certSource: secret
+    secret:
+       secretName: "harbor-tls" # Name of the k8s secret where letsencrypt certificate is stored
+       notarySecretName: "harbor-tls" # Name of the k8s secret where letsencrypt certificate is stored
+  ingress:
+    hosts:
+      core: hub.devopsbypr.in # Domain name where you want to expose Harbor UI
+      notary: notary.devopsbypr.in
+    className: nginx
+externalURL: https://hub.devopsbypr.in # External URL for Harbor UI
+internalTLS:
+   enabled: true  # Enabling internal TLS
+   certSource: "auto" # Generating certificates automatically for internal components
+logLevel: info # Loglevel
+#existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
+harborAdminPassword: "demo" # Initial Harbor admin password
+portal:
+  replicas: 1  # Number of repliacs for portal
+core:
+  replicas: 1  # Number of replicas for Core
+jobservice:
+  replicas: 1  # Number of replicas for jobservice
+registry:
+  replicas: 1  # Number of replicas for registry
+trivy:
+  replicas: 1  # Number of replicas for trivy
+notary:
+  enabled: true # Enabling Notary
+  server:
+    replicas: 1 # Number of replicas for notary server
+  signer:
+    replicas: 1 # Number of replicas for notary signer
+database:
+  type: internal # you can use either internal database(part of k8s) or external database(which is hosted in cloud)
+redis:
+  type: internal # you can use either internal redis cache(part of k8s) or external cache(which is hosted in cloud)
+exporter:
+  replicas: 1    # Number of replicas for Exporter
+metrics:
+  enabled: true  # Enabling Metrics or not
+  serviceMonitor:
+    enabled: true # Enabling service monitor or not
+trace:
+  enabled: false  # Enabling trace or not
+cache:
+  enabled: true   # Enabling cache or not

@@ -44,9 +44,9 @@ jobs:
 
       - name: Install Harbor 
         run: |
-          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add harbor https://helm.goharbor.io
           helm repo update
-          helm upgrade --install harbor bitnami/harbor -n harbor -f cluster-provisioning/harbor/values.yaml --create-namespace
+          helm upgrade --install harbor harbor/harbor -n harbor -f cluster-provisioning/harbor/values.yaml --create-namespace
 
 
 
