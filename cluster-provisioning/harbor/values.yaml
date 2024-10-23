@@ -33,13 +33,3 @@ database:
   type: internal # you can use either internal database(part of k8s) or external database(which is hosted in cloud)
 redis:
   type: internal # you can use either internal redis cache(part of k8s) or external cache(which is hosted in cloud)
-exporter:
-  replicas: 1    # Number of replicas for Exporter
-metrics:
-  enabled: true  # Enabling Metrics or not
-  serviceMonitor:
-    enabled: true # Enabling service monitor or not
-trace:
-  enabled: false  # Enabling trace or not
-cache:
-  enabled: true   # Enabling cache or not
