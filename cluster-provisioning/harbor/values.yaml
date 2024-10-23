@@ -1,11 +1,6 @@
 expose:
   type: ingress # exposing Harbor at ingress
-  tls:
-    enabled: true # enabling tls secret
-    certSource: secret
-    secret:
-       secretName: "harbor-tls" # Name of the k8s secret where letsencrypt certificate is stored
-       notarySecretName: "harbor-tls" # Name of the k8s secret where letsencrypt certificate is stored
+ 
   ingress:
     hosts:
       core: hub.devopsbypr.in # Domain name where you want to expose Harbor UI
@@ -13,7 +8,7 @@ expose:
     className: nginx
 externalURL: https://hub.devopsbypr.in # External URL for Harbor UI
 internalTLS:
-   enabled: true  # Enabling internal TLS
+   enabled: false  # Enabling internal TLS
    certSource: "auto" # Generating certificates automatically for internal components
 logLevel: info # Loglevel
 #existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
