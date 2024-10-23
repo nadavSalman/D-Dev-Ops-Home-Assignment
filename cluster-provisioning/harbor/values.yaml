@@ -1,5 +1,4 @@
 externalURL: https://hub.devopsbypr.in
 adminPassword: "learningharbor"
-nginx:
-  tls:
-    commonName: hub.devopsbypr.in
+exposureType: "ingress"
+
