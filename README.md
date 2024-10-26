@@ -10,7 +10,7 @@ Prerequisite
 - Docker
 - [Kind](https://kind.sigs.k8s.io/) cli 
     - Setup [kind cluster with Ingress Controller](https://kind.sigs.k8s.io/docs/user/ingress/), chose Nginx. (There is a GitHub flow after settign self hosted agent)
-- Optinal - [Install cilium cli](https://docs.cilium.io/en/stable/installation/kind/)
+- **Optinal** - [Install cilium cli](https://docs.cilium.io/en/stable/installation/kind/) 
 
 
 ## Import Mising Post db data (`sample_airbnb.listingsAndReviews`)
@@ -112,6 +112,18 @@ kube-system          Active   8d
 local-path-storage   Active   8d
 mongodb              Active   2s
 ```
+
+
+###  Artifacts Repository Management
+
+| Container Images              | Helm Charts                        |
+|:------------------------------|:-----------------------------------|
+| `nadavdev/dropit-data-sync-job`| `nadavdev/dropit-helm-data-sync-job`|
+| `nadavdev/dropit-server-be`    | `nadavdev/dropit-helm-server-be`    |
+| `nadavdev/dropit-app-fe`       | `nadavdev/dropit-helm-app-fe`       |
+
+
+
 
 
 ### Install MongoDB Community Operator
@@ -253,7 +265,7 @@ setup :
 
 Dump data (`mongodump`)
 ```bash
-20:39:12 tmp-mongosh:/# mongodump --uri "mongodb+srv://nadavdevops:sQPUhIdPhOumv1pa@cluster01.ypl06.mongodb.net/sample_airbnb?retryWrites=true&w=majority&appName=Cluster01"  --archive > db.dump
+20:39:12 tmp-mongosh:/# mongodump --uri "mongodb+srv://`nadavdev/dropit`ops:sQPUhIdPhOumv1pa@cluster01.ypl06.mongodb.net/sample_airbnb?retryWrites=true&w=majority&appName=Cluster01"  --archive > db.dump
 2024-10-22T20:39:24.570+0000    writing sample_airbnb.listingsAndReviews to archive on stdout
 2024-10-22T20:39:25.354+0000    [........................]  sample_airbnb.listingsAndReviews  0/5555  (0.0%)
 2024-10-22T20:39:28.352+0000    [#######.................]  sample_airbnb.listingsAndReviews  1693/5555  (30.5%)
