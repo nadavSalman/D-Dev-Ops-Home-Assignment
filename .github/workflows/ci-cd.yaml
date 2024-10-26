@@ -41,6 +41,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          file: "mongodb-configuration/dump-job-app/Dockerfile"
+          file: "mongodb-configuration/data-sync-app/Dockerfile"
           tags: ${{ steps.meta.outputs.tags }}
           # tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:${{ steps.meta.outputs.tags }}
