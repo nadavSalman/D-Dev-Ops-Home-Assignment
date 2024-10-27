@@ -6,8 +6,8 @@ spec:
   template:
     spec:
       restartPolicy: Never
-      containers:
-      - name: main
+      initContainers:
+      - name: init-load-data
         image: rtsp/mongosh
         env:
         - name: ATLAS_URI
@@ -32,5 +32,9 @@ spec:
           echo "Primary Host : $PRIMARY_HOST"
 
           # restore
-          mongorestore --uri "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@$PRIMARY_HOST:40333" --archive < db.dump
+          mongorestore --uri "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@$PRIMARY_HOST:40333" --archive < db.dump      
+      containers:
+      - name: main
+        image: nadavdev/dropit-data-sync-job
+        command: ["python", "main.py"]
   backoffLimit: 6
