@@ -16,7 +16,7 @@ mongodb:
     - name: userAdminAnyDatabase
       db: admin
     - name: readWrite
-      db: sample_airbnb
+      db: sample_training
   authenticationModes:
     - SCRAM
   additionalMongodConfig:
