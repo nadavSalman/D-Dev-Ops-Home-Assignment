@@ -37,4 +37,4 @@ spec:
       - name: main
         image: {{ .Values.mainContainer.image }}:{{ .Values.mainContainer.tag }}
         command: ["python", "main.py"]
-  backoffLimit: 6
+  backoffLimit: 1
