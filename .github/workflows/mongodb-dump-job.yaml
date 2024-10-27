@@ -1,4 +1,4 @@
-name: MongoDB Dump K8s Job
+name: MongoDB Dump AND Sync K8s Job
 
 on:
     workflow_dispatch:
