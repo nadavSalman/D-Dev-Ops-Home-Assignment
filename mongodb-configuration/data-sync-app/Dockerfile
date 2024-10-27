@@ -1,13 +1,9 @@
 FROM python:3.11
 
-# Copy main requirements
 COPY requirements.txt /app
+
 RUN pip3 install -r requirements.txt
 
-# Copy dev requirements 
-COPY requirements-dev.txt /app  
-RUN pip3 install -r requirements-dev.txt
+COPY . .
 
-# Copy test requirements
-COPY requirements-test.txt /app
-RUN pip3 install -r requirements-test.txt 
+CMD ["python", "main.py"]
