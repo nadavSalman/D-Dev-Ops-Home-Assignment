@@ -5,7 +5,7 @@ local:
   password: ""
 
 job:
-  name: "mongodb-dump-data-job"
+  name: "dump-sync-job"
 
 mainContainer:
   image: nadavdev/dropit-data-sync-job
