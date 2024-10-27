@@ -76,3 +76,16 @@ jobs:
           kubectl get namespace ingress-nginx || kubectl create namespace ingress-nginx
           helm template   mongodb-community  mongodb-configuration/mongodb-community-setup/ -n mongodb
           helm upgrade --install  mongodb-community  mongodb-configuration/mongodb-community-setup/ -n mongodb
+
+      - name: Create Dev Namespaces
+        run: |
+          namespaces=("app-fe" "server-be")  
+
+          for ns in "${namespaces[@]}"; do
+            if kubectl get namespace "$ns" >/dev/null 2>&1; then
+              echo "Namespace '$ns' already exists."
+            else
+              echo "Creating namespace: $ns"
+              kubectl create namespace "$ns"
+            fi
+          done

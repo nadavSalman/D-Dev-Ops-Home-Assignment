@@ -399,93 +399,50 @@ devops-mongodb [direct: primary] sample_training>
 ```
 
 
-### Example queries on the collection `sample_airbnb.listingsAndReviews`
 
-```sql
-db.listingsAndReviews.find({ "address.market": "New York" }).limit(5)
-db.listingsAndReviews.find({ "price": { $gte: 100, $lte: 200 } }).limit(5)
-devops-mongodb [direct: primary] sample_airbnb> db.listingsAndReviews.countDocuments()
-5555
-devops-mongodb [direct: primary] sample_airbnb>
-
-db.listingsAndReviews.find().sort({ price: 1 }).limit(5)
-
-```
-
-
-Delete sample_airbnb DB to test dump-job
+Debug k8s job Init Container - `restored successfully`:
 
 ```bash
-21:58:53 tmp-mongosh:/# PRIMARY_HOST=$(mongosh "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@devops-mongodb-svc.mongodb.svc.cluster.local:40333" --quiet --eval "rs.status()" --json | jq -r '.members[] | select(.stateStr == "PRIMARY") | .name' | cut -d':' -f1)
-Enter password: ************
-21:59:09 tmp-mongosh:/# mongosh mongodb://my-user:***@$PRIMARY_HOST:40333
-Current Mongosh Log ID: 6718204c8b2be33d16fe6910
-Connecting to:          mongodb://<credentials>@devops-mongodb-1.devops-mongodb-svc.mongodb.svc.cluster.local:40333/?directConnection=true&appName=mongosh+2.3.2
-Using MongoDB:          6.0.5
-Using Mongosh:          2.3.2
+❯  k logs dump-sync-job-dt7wf -c init-load-data -f -n mongodb
+2024-10-27T19:58:28.457+0000    writing sample_training.posts to archive on stdout
+2024-10-27T19:58:31.159+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:58:34.159+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:58:37.239+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:58:40.239+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:58:43.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:58:46.240+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:58:49.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:58:52.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:58:55.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:58:58.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:01.240+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:04.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:07.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:10.454+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:13.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:16.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:19.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:22.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:25.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:28.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:31.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:34.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:37.661+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:40.660+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:43.661+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:46.660+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:49.661+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:52.661+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:53.281+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:59:53.291+0000    Failed: error writing data for collection `sample_training.posts` to disk: error reading collection: connection(cluster01-shard-00-01.sv6iv.mongodb.net:27017[-8]) incomplete read of full message: read tcp 10.244.2.128:60860->13.73.152.69:27017: use of closed network connection
+Primary Host : devops-mongodb-2.devops-mongodb-svc.mongodb.svc.cluster.local
+2024-10-27T19:59:54.302+0000    preparing collections to restore from
+2024-10-27T19:59:54.307+0000    reading metadata for sample_training.posts from archive on stdin
+2024-10-27T19:59:54.395+0000    restoring sample_training.posts from archive on stdin
+2024-10-27T19:59:54.740+0000    finished restoring sample_training.posts (101 documents, 0 failures)
+2024-10-27T19:59:54.740+0000    no indexes to restore for collection sample_training.posts
+2024-10-27T19:59:54.740+0000    101 document(s) restored successfully. 0 document(s) failed to restore.
 
-For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
-
-------
-   The server generated these startup warnings when booting
-   2024-10-22T20:24:22.669+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
-   2024-10-22T20:24:24.034+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
-   2024-10-22T20:24:24.035+00:00: vm.max_map_count is too low
-------
-
-devops-mongodb [direct: primary] test> show dbs
-admin          192.00 KiB
-config         248.00 KiB
-local           53.23 MiB
-sample_airbnb   51.48 MiB
-devops-mongodb [direct: primary] test> use sample_airbnb
-switched to db sample_airbnb
-devops-mongodb [direct: primary] sample_airbnb> db.dropDatabase()
-{ ok: 1, dropped: 'sample_airbnb' }
-devops-mongodb [direct: primary] sample_airbnb> show dbs
-admin   192.00 KiB
-config  248.00 KiB
-local    53.23 MiB
-devops-mongodb [direct: primary] sample_airbnb>
-```
-
-
-Job Copleted :
-```bash
-~
-❯ k get pods -n mongodb
-NAME                                          READY   STATUS      RESTARTS   AGE
-devops-mongodb-0                              2/2     Running     0          160m
-devops-mongodb-1                              2/2     Running     0          159m
-devops-mongodb-2                              2/2     Running     0          159m
-mongodb-dump-data-job-gszdq                   0/1     Completed   0          2m35s
-mongodb-kubernetes-operator-97dcdd8f9-nj4rb   1/1     Running     0          8h
-tmp-mongosh                                   1/1     Running     0          18m
-
-~
-❯  k logs mongodb-dump-data-job-gszdq -n mongodb
-2024-10-22T23:01:28.643+0000    writing sample_airbnb.listingsAndReviews to archive on stdout
-2024-10-22T23:01:30.066+0000    [........................]  sample_airbnb.listingsAndReviews  101/5555  (1.8%)
-2024-10-22T23:01:33.218+0000    [###########.............]  sample_airbnb.listingsAndReviews  2771/5555  (49.9%)
-2024-10-22T23:01:36.218+0000    [######################..]  sample_airbnb.listingsAndReviews  5199/5555  (93.6%)
-2024-10-22T23:01:36.404+0000    [########################]  sample_airbnb.listingsAndReviews  5555/5555  (100.0%)
-2024-10-22T23:01:36.426+0000    done dumping sample_airbnb.listingsAndReviews (5555 documents)
-Primary Host : devops-mongodb-1.devops-mongodb-svc.mongodb.svc.cluster.local
-2024-10-22T23:01:37.745+0000    preparing collections to restore from
-2024-10-22T23:01:37.753+0000    reading metadata for sample_airbnb.listingsAndReviews from archive on stdin
-2024-10-22T23:01:37.864+0000    restoring sample_airbnb.listingsAndReviews from archive on stdin
-2024-10-22T23:01:40.730+0000    sample_airbnb.listingsAndReviews  20.8MB
-2024-10-22T23:01:43.729+0000    sample_airbnb.listingsAndReviews  38.1MB
-2024-10-22T23:01:46.729+0000    sample_airbnb.listingsAndReviews  38.1MB
-2024-10-22T23:01:49.729+0000    sample_airbnb.listingsAndReviews  50.2MB
-2024-10-22T23:01:52.730+0000    sample_airbnb.listingsAndReviews  59.0MB
-2024-10-22T23:01:55.729+0000    sample_airbnb.listingsAndReviews  77.4MB
-2024-10-22T23:01:58.729+0000    sample_airbnb.listingsAndReviews  90.0MB
-2024-10-22T23:02:00.436+0000    sample_airbnb.listingsAndReviews  90.0MB
-2024-10-22T23:02:00.436+0000    finished restoring sample_airbnb.listingsAndReviews (5555 documents, 0 failures)
-2024-10-22T23:02:00.437+0000    no indexes to restore for collection sample_airbnb.listingsAndReviews
-2024-10-22T23:02:00.437+0000    5555 document(s) restored successfully. 0 document(s) failed to restore.
-
-~
+~ took 47s
 ❯
 ```
