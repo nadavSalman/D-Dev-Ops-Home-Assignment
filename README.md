@@ -91,11 +91,6 @@ Prerequisite
 - Add Atlas cluster full URI as GitHub Action secret.
 
 
-Validate imported data :
-![alt text](images/mongodb-import-sample_airbnb-db.png)
-
-
-
 
 ## Adding self-hosted runners
 ![alt text](images/self-hosted-runner-01.png)
@@ -302,24 +297,79 @@ Identifiy primary :
 Primary host: devops-mongodb-1.devops-mongodb-svc.mongodb.svc.cluster.local
 ```
 
-Load data (`mongorestore`)
+Load data : `mongodump` - `mongorestore` (`K8s Pod`)
 ```bash
-20:47:33 tmp-mongosh:/# mongorestore --uri "mongodb://my-user:***@$PRIMARY_HOST:40333" --archive < db.dump
-2024-10-22T20:47:38.055+0000    preparing collections to restore from
-2024-10-22T20:47:38.070+0000    reading metadata for sample_airbnb.listingsAndReviews from archive on stdin
-2024-10-22T20:47:38.182+0000    restoring sample_airbnb.listingsAndReviews from archive on stdin
-2024-10-22T20:47:41.001+0000    sample_airbnb.listingsAndReviews  20.9MB
-2024-10-22T20:47:44.000+0000    sample_airbnb.listingsAndReviews  38.1MB
-2024-10-22T20:47:47.000+0000    sample_airbnb.listingsAndReviews  50.5MB
-2024-10-22T20:47:50.000+0000    sample_airbnb.listingsAndReviews  77.4MB
-2024-10-22T20:47:53.000+0000    sample_airbnb.listingsAndReviews  90.0MB
-2024-10-22T20:47:53.388+0000    sample_airbnb.listingsAndReviews  90.0MB
-2024-10-22T20:47:53.388+0000    finished restoring sample_airbnb.listingsAndReviews (5555 documents, 0 failures)
-2024-10-22T20:47:53.389+0000    no indexes to restore for collection sample_airbnb.listingsAndReviews
-2024-10-22T20:47:53.389+0000    5555 document(s) restored successfully. 0 document(s) failed to restore.
-20:47:53 tmp-mongosh:/# mongosh mongodb://my-user:***@devops-mongodb-svc.mongodb.svc.cluster.local:40333
-Current Mongosh Log ID: 67180faa8e8ebfa44ffe6910
-Connecting to:          mongodb://<credentials>@devops-mongodb-svc.mongodb.svc.cluster.local:40333/?directConnection=true&appName=mongosh+2.3.2
+❯ k run tmp-mongosh --image=rtsp/mongosh -n mongodb  --rm -it -- bash
+19:44:55 tmp-mongosh:/# mongodump --uri "mongodb+srv://nadavdevops:13k6WO3uxLmG6xxe@cluster01.sv6iv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01" --db "sample_training" --collection "posts" --archive > db.dump
+2024-10-27T19:45:09.834+0000    writing sample_training.posts to archive on stdout
+2024-10-27T19:45:12.649+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:45:15.649+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:45:18.650+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:45:21.649+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:45:24.649+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:45:27.649+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-27T19:45:30.650+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:45:33.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:45:36.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:45:39.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:45:42.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:45:45.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:45:48.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:45:51.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:45:54.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:45:57.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:00.732+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:04.056+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:07.055+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:10.055+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:13.055+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:16.055+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:19.055+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:22.055+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:25.055+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:28.056+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:31.055+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-27T19:46:31.360+0000    [########################]  sample_training.posts  500/500  (100.0%)
+2024-10-27T19:46:31.362+0000    done dumping sample_training.posts (500 documents)
+19:46:31 tmp-mongosh:/# ls -la
+total 17M
+drwxr-xr-x   1 root root 4.0K 2024-10-27 19:45 ./
+drwxr-xr-x   1 root root 4.0K 2024-10-27 19:45 ../
+lrwxrwxrwx   1 root root    7 2024-09-26 00:00 bin -> usr/bin/
+drwxr-xr-x   2 root root 4.0K 2024-08-14 16:10 boot/
+-rw-r--r--   1 root root  17M 2024-10-27 19:46 db.dump
+drwxr-xr-x   5 root root  380 2024-10-27 19:44 dev/
+drwxr-xr-x   1 root root 4.0K 2024-10-27 19:44 etc/
+drwxr-xr-x   2 root root 4.0K 2024-08-14 16:10 home/
+lrwxrwxrwx   1 root root    7 2024-09-26 00:00 lib -> usr/lib/
+lrwxrwxrwx   1 root root    9 2024-09-26 00:00 lib64 -> usr/lib64/
+drwxr-xr-x   2 root root 4.0K 2024-09-26 00:00 media/
+drwxr-xr-x   2 root root 4.0K 2024-09-26 00:00 mnt/
+drwxr-xr-x   2 root root 4.0K 2024-09-26 00:00 opt/
+dr-xr-xr-x 638 root root    0 2024-10-27 19:44 proc/
+-rw-r--r--   1 root root   37 2024-10-27 19:44 product_uuid
+drwx------   1 root root 4.0K 2024-10-10 22:37 root/
+drwxr-xr-x   1 root root 4.0K 2024-10-27 19:44 run/
+lrwxrwxrwx   1 root root    8 2024-09-26 00:00 sbin -> usr/sbin/
+drwxr-xr-x   2 root root 4.0K 2024-09-26 00:00 srv/
+dr-xr-xr-x  11 root root    0 2024-10-27 19:44 sys/
+drwxrwxrwt   2 root root 4.0K 2024-09-26 00:00 tmp/
+drwxr-xr-x   1 root root 4.0K 2024-09-26 00:00 usr/
+drwxr-xr-x   1 root root 4.0K 2024-09-26 00:00 var/
+19:47:28 tmp-mongosh:/# export PRIMARY_HOST=$(mongosh "mongodb://my-user:Q1w2e3r4t5y6@devops-mongodb-svc.mongodb.svc.cluster.local:40333" --quiet --eval "rs.status()" --json | jq -r '.memb
+ers[] | select(.stateStr == "PRIMARY") | .name' | cut -d':' -f1)
+19:48:43 tmp-mongosh:/# echo $PRIMARY_HOST
+devops-mongodb-2.devops-mongodb-svc.mongodb.svc.cluster.local
+19:48:50 tmp-mongosh:/# mongorestore --uri "mongodb://my-user:Q1w2e3r4t5y6@$PRIMARY_HOST:40333" --archive < db.dump
+2024-10-27T19:49:25.011+0000    preparing collections to restore from
+2024-10-27T19:49:25.019+0000    reading metadata for sample_training.posts from archive on stdin
+2024-10-27T19:49:25.125+0000    restoring sample_training.posts from archive on stdin
+2024-10-27T19:49:26.528+0000    finished restoring sample_training.posts (500 documents, 0 failures)
+2024-10-27T19:49:26.529+0000    no indexes to restore for collection sample_training.posts
+2024-10-27T19:49:26.529+0000    500 document(s) restored successfully. 0 document(s) failed to restore.
+19:49:26 tmp-mongosh:/# mongosh  "mongodb://my-user:Q1w2e3r4t5y6@$PRIMARY_HOST:40333"
+Current Mongosh Log ID: 671e995d2e5efee918fe6910
+Connecting to:          mongodb://<credentials>@devops-mongodb-2.devops-mongodb-svc.mongodb.svc.cluster.local:40333/?directConnection=true&appName=mongosh+2.3.2
 Using MongoDB:          6.0.5
 Using Mongosh:          2.3.2
 
@@ -331,17 +381,21 @@ You can opt-out by running the disableTelemetry() command.
 
 ------
    The server generated these startup warnings when booting
-   2024-10-22T20:23:39.815+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
-   2024-10-22T20:23:42.603+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
-   2024-10-22T20:23:42.604+00:00: vm.max_map_count is too low
+   2024-10-27T16:35:36.642+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2024-10-27T16:35:39.966+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+   2024-10-27T16:35:39.966+00:00: vm.max_map_count is too low
 ------
 
-devops-mongodb [direct: secondary] test> show dbs
-admin          192.00 KiB
-config         240.00 KiB
-local           53.13 MiB
-sample_airbnb   51.48 MiB
-devops-mongodb [direct: secondary] test>
+devops-mongodb [direct: primary] test> show dbs
+admin            192.00 KiB
+config           244.00 KiB
+local            161.64 MiB
+sample_training    3.90 MiB
+devops-mongodb [direct: primary] test> use sample_training
+switched to db sample_training
+devops-mongodb [direct: primary] sample_training> db.getCollectionNames();
+[ 'posts' ]
+devops-mongodb [direct: primary] sample_training>
 ```
 
 
