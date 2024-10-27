@@ -1,22 +1,13 @@
-FROM python:3
+FROM python:3.11
 
-#set envionment variables
-ENV PYTHONUNBUFFERED 1
+# Copy main requirements
+COPY requirements.txt /app
+RUN pip3 install -r requirements.txt
 
-# run this before copying requirements for cache efficiency
-RUN pip install --upgrade pip
+# Copy dev requirements 
+COPY requirements-dev.txt /app  
+RUN pip3 install -r requirements-dev.txt
 
-
-#set work directory early so remaining paths can be relative
-WORKDIR /app
-
-COPY requirements.txt .
-
-
-#install dependencies
-RUN pip install -r requirements.txt
-
-# copy code itself from context to image
-COPY . .
-
-CMD ["python", "main.py"]
+# Copy test requirements
+COPY requirements-test.txt /app
+RUN pip3 install -r requirements-test.txt 
