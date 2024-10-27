@@ -41,7 +41,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          type=local,src=path/to/dir
           file: "mongodb-configuration/data-sync-app/Dockerfile"
           tags: ${{ steps.meta.outputs.tags }}
           # tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:${{ steps.meta.outputs.tags }}
