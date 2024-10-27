@@ -1,6 +1,8 @@
-FROM python:3.11
+FROM python:3.13-slim
 
-COPY ./requirements.txt /app/
+WORKDIR /app
+
+COPY mongodb-configuration/data-sync-app/requirements.txt /app/
 
 RUN pip3 install -r requirements.txt
 
