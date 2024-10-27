@@ -13,7 +13,7 @@ Prerequisite
 - **Optinal** - [Install cilium cli](https://docs.cilium.io/en/stable/installation/kind/) 
 
 
-## Import Mising Post db data (`sample_airbnb.listingsAndReviews`)
+## Import Mising Post db data (`sample_training.posts`)
 
 One of the component requirements is: "Import the provided ([Link for Dump](https://www.mongodb.com/docs/atlas/sample-data/sample-training/#std-label-sample-training)) MongoDB Dump into the MongoDB instance in the K8s cluster."
 
@@ -33,37 +33,57 @@ C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-d
 
  Directory of C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-database-tools-windows-x86_64-100.10.0\bin
 
-10/22/2024  08:06 PM    <DIR>          .
-10/22/2024  08:02 PM    <DIR>          ..
-10/22/2024  08:02 PM        16,588,590 bsondump.exe
-10/22/2024  08:06 PM        99,656,721 listingsAndReviews.json
-10/22/2024  08:02 PM        23,243,614 mongodump.exe
-10/22/2024  08:02 PM        22,831,256 mongoexport.exe
-10/22/2024  08:02 PM        22,766,308 mongofiles.exe
-10/22/2024  08:02 PM        23,056,766 mongoimport.exe
-10/22/2024  08:02 PM        23,771,720 mongorestore.exe
-10/22/2024  08:02 PM        22,298,759 mongostat.exe
-10/22/2024  08:02 PM        21,782,277 mongotop.exe
-               9 File(s)    275,996,011 bytes
-               2 Dir(s)  906,911,125,504 bytes free
+10/27/2024  05:19 PM    <DIR>          .
+10/22/2024  07:02 PM    <DIR>          ..
+10/22/2024  07:02 PM        16,588,590 bsondump.exe
+10/22/2024  07:06 PM        99,656,721 listingsAndReviews.json
+10/22/2024  07:02 PM        23,243,614 mongodump.exe
+10/22/2024  07:02 PM        22,831,256 mongoexport.exe
+10/22/2024  07:02 PM        22,766,308 mongofiles.exe
+10/22/2024  07:02 PM        23,056,766 mongoimport.exe
+10/22/2024  07:02 PM        23,771,720 mongorestore.exe
+10/22/2024  07:02 PM        22,298,759 mongostat.exe
+10/22/2024  07:02 PM        21,782,277 mongotop.exe
+10/27/2024  05:19 PM        17,215,951 posts.json
+              10 File(s)    293,211,962 bytes
+               2 Dir(s)  882,452,078,592 bytes free
 
-C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-database-tools-windows-x86_64-100.10.0\bin>mongoimport.exe --drop --uri "mongodb+srv://**********:********@cluster01.ypl06.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01" --db "sample_airbnb" --collection "listingsAndReviews" --file listingsAndReviews.json
-2024-10-22T20:14:10.678+0300    connected to: mongodb+srv://[**REDACTED**]@cluster01.ypl06.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01
-2024-10-22T20:14:10.796+0300    dropping: sample_airbnb.listingsAndReviews
-2024-10-22T20:14:13.688+0300    [#####...................] sample_airbnb.listingsAndReviews     23.3MB/95.0MB (24.5%)
-2024-10-22T20:14:16.690+0300    [#####...................] sample_airbnb.listingsAndReviews     23.3MB/95.0MB (24.5%)
-2024-10-22T20:14:19.686+0300    [##########..............] sample_airbnb.listingsAndReviews     41.4MB/95.0MB (43.6%)
-2024-10-22T20:14:22.692+0300    [##########..............] sample_airbnb.listingsAndReviews     41.4MB/95.0MB (43.6%)
-2024-10-22T20:14:25.694+0300    [#############...........] sample_airbnb.listingsAndReviews     53.9MB/95.0MB (56.8%)
-2024-10-22T20:14:28.693+0300    [###############.........] sample_airbnb.listingsAndReviews     63.0MB/95.0MB (66.3%)
-2024-10-22T20:14:31.688+0300    [###############.........] sample_airbnb.listingsAndReviews     63.0MB/95.0MB (66.3%)
-2024-10-22T20:14:34.686+0300    [#####################...] sample_airbnb.listingsAndReviews     83.5MB/95.0MB (87.8%)
-2024-10-22T20:14:37.683+0300    [#####################...] sample_airbnb.listingsAndReviews     83.5MB/95.0MB (87.8%)
-2024-10-22T20:14:40.685+0300    [########################] sample_airbnb.listingsAndReviews     95.0MB/95.0MB (100.0%)
-2024-10-22T20:14:41.270+0300    [########################] sample_airbnb.listingsAndReviews     95.0MB/95.0MB (100.0%)
-2024-10-22T20:14:41.271+0300    5555 document(s) imported successfully. 0 document(s) failed to import.
+C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-database-tools-windows-x86_64-100.10.0\bin>mongoimport.exe --drop --uri "mongodb+srv://nadavdevops:13k6WO3uxLmG6xxe@cluster01.sv6iv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01" --db "sample_training" --collection "posts" --file posts.json
+2024-10-27T17:20:12.529+0200    connected to: mongodb+srv://[**REDACTED**]@cluster01.sv6iv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01
+2024-10-27T17:20:12.617+0200    dropping: sample_training.posts
+2024-10-27T17:20:15.536+0200    [########################] sample_training.posts        16.4MB/16.4MB (100.0%)
+2024-10-27T17:20:18.355+0200    [########################] sample_training.posts        16.4MB/16.4MB (100.0%)
+2024-10-27T17:20:18.355+0200    500 document(s) imported successfully. 0 document(s) failed to import.
 
 C:\Users\User\Downloads\mongodb-database-tools-windows-x86_64-100.10.0\mongodb-database-tools-windows-x86_64-100.10.0\bin>
+```
+### Test the data with the BE server app :
+```bash
+❯ curl localhost:5050/posts/latest | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   665  100   665    0     0   3994      0 --:--:-- --:--:-- --:--:--  4006
+[
+  {
+    "_id": "50ab0f8dbcf1bfe2536dc7de",
+    "author": "machine",
+    "title": "Bill of Rights",
+    "tags": [
+      "watch",
+      "speedboat",
+      "zoo",
+      "authority",
+      "coach",
+      "gasoline",
+      "side",
+      "author",
+      "purpose",
+      "shrimp"
+    ],
+    "date": "2012-11-20T05:05:17.032Z"
+  },
+  {
+...
 ```
 
 
