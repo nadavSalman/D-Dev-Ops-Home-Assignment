@@ -6,3 +6,7 @@ local:
 
 job:
   name: "mongodb-dump-data-job"
+
+mainContainer:
+  image: nadavdev/dropit-data-sync-job
+  tag: "main"  

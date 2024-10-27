@@ -35,6 +35,6 @@ spec:
           mongorestore --uri "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@$PRIMARY_HOST:40333" --archive < db.dump      
       containers:
       - name: main
-        image: nadavdev/dropit-data-sync-job
+        image: {{ .Values.mainContainer.image }}:{{ .Values.mainContainer.tag }}
         command: ["python", "main.py"]
   backoffLimit: 6
