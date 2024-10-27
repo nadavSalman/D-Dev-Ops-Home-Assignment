@@ -1,4 +1,0 @@
-[submodule "submodules"]
-	path = submodules
-	url = https://github.com/mongodb-developer/mongodb-express-rest-api-example.git
-	branch = main
