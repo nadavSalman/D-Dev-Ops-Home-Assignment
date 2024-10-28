@@ -15,4 +15,4 @@
 
 FROM nginx:stable-alpine
 
-COPY /app/build/ /usr/share/nginx/html 
+COPY ./app-fe/build /usr/share/nginx/html 
