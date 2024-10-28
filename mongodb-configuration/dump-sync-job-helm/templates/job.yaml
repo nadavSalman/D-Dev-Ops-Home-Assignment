@@ -38,6 +38,7 @@ spec:
           # mongorestore --uri "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@$PRIMARY_HOST:40333" --archive < db.dump      
       containers:
       - name: main
+        imagePullPolicy: Always
         image: {{ .Values.mainContainer.image }}:{{ .Values.mainContainer.tag }}
         env:
           {{- toYaml .Values.env | nindent 12 }}
