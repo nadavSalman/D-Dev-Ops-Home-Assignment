@@ -85,7 +85,11 @@ def main():
 
     except requests.exceptions.RequestException as e:
         print(f"Error during the request: {e}")
-
+        
+    contents = os.listdir('/app')
+    print("Contents of /app:")
+    for item in contents:
+        print(item)
 
 if __name__ == '__main__':
     main()
