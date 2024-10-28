@@ -8,6 +8,6 @@ RUN npm install
 
 COPY ./server-be /app
 
-CMD ["node", "app.js"]
+CMD ["node", "index.mjs"]
 
 EXPOSE 5050

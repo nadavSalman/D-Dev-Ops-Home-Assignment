@@ -1,4 +1,4 @@
-name: CI to Local Kind Cluster
+name: CI/CD data-sync-job
 
 on:
   push:
