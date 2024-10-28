@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
 
 jobs:
-  mongodb-dump-data:
+  server-be-cd:
     runs-on: self-hosted 
     env:
         ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
@@ -12,7 +12,7 @@ jobs:
         
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Deploy Server BE 
         env:

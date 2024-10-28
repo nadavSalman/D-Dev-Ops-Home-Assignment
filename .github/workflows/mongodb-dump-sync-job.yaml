@@ -6,9 +6,13 @@ on:
 jobs:
   mongodb-dump-data:
     runs-on: self-hosted 
+    env:
+      ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
+      ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Clean up old job
         run: kubectl delete job dump-sync-job -n mongodb --ignore-not-found
