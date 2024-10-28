@@ -47,7 +47,7 @@ def main():
     #(2) HTTP POST - Create new post documetn by communicating with the sever-BE app
     print('(2) HTTP POST - Create new post documetn by communicating with the sever-BE app')
 
-    post_url = f"{server_be_endpoint}/posts"
+    post_url = f"{server_be_endpoint}/"
     headers = {"Content-Type": "application/json"}
 
     try:
