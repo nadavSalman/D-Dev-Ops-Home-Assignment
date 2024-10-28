@@ -403,46 +403,68 @@ devops-mongodb [direct: primary] sample_training>
 Debug k8s job Init Container - `restored successfully`:
 
 ```bash
-❯  k logs dump-sync-job-dt7wf -c init-load-data -f -n mongodb
-2024-10-27T19:58:28.457+0000    writing sample_training.posts to archive on stdout
-2024-10-27T19:58:31.159+0000    [........................]  sample_training.posts  0/500  (0.0%)
-2024-10-27T19:58:34.159+0000    [........................]  sample_training.posts  0/500  (0.0%)
-2024-10-27T19:58:37.239+0000    [........................]  sample_training.posts  0/500  (0.0%)
-2024-10-27T19:58:40.239+0000    [........................]  sample_training.posts  0/500  (0.0%)
-2024-10-27T19:58:43.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:58:46.240+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:58:49.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:58:52.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:58:55.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:58:58.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:01.240+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:04.239+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:07.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:10.454+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:13.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:16.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:19.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:22.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:25.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:28.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:31.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:34.453+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:37.661+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:40.660+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:43.661+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:46.660+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:49.661+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:52.661+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:53.281+0000    [####....................]  sample_training.posts  101/500  (20.2%)
-2024-10-27T19:59:53.291+0000    Failed: error writing data for collection `sample_training.posts` to disk: error reading collection: connection(cluster01-shard-00-01.sv6iv.mongodb.net:27017[-8]) incomplete read of full message: read tcp 10.244.2.128:60860->13.73.152.69:27017: use of closed network connection
-Primary Host : devops-mongodb-2.devops-mongodb-svc.mongodb.svc.cluster.local
-2024-10-27T19:59:54.302+0000    preparing collections to restore from
-2024-10-27T19:59:54.307+0000    reading metadata for sample_training.posts from archive on stdin
-2024-10-27T19:59:54.395+0000    restoring sample_training.posts from archive on stdin
-2024-10-27T19:59:54.740+0000    finished restoring sample_training.posts (101 documents, 0 failures)
-2024-10-27T19:59:54.740+0000    no indexes to restore for collection sample_training.posts
-2024-10-27T19:59:54.740+0000    101 document(s) restored successfully. 0 document(s) failed to restore.
+❯ k logs dump-sync-job-c7jnr -f -c init -n mongodb 
+2024-10-28T07:25:07.018+0000    initializing mongodump object
+2024-10-28T07:25:07.020+0000    will listen for SIGTERM, SIGINT, and SIGKILL
+2024-10-28T07:25:08.870+0000    dumping from a MongoDB Atlas free or shared cluster
+2024-10-28T07:25:09.113+0000    starting Dump()
+2024-10-28T07:25:09.343+0000    Getting estimated count for sample_training.posts
+2024-10-28T07:25:09.444+0000    enqueued collection 'sample_training.posts'
+2024-10-28T07:25:09.444+0000    dump phase I: metadata, indexes, users, roles, version
+2024-10-28T07:25:09.444+0000            reading indexes for `sample_training.posts`
+2024-10-28T07:25:09.670+0000    archive prelude sample_training.posts
+2024-10-28T07:25:09.671+0000    dump phase II: regular collections
+2024-10-28T07:25:09.671+0000    finalizing intent manager with legacy prioritizer
+2024-10-28T07:25:09.671+0000    dumping up to 1 collections in parallel
+2024-10-28T07:25:09.671+0000    starting dump routine with id=0
+2024-10-28T07:25:10.073+0000    writing sample_training.posts to archive on stdout
+2024-10-28T07:25:10.073+0000    MuxIn open sample_training.posts
+2024-10-28T07:25:10.075+0000    Getting estimated count for sample_training.posts
+2024-10-28T07:25:10.075+0000    Mux open namespace sample_training.posts
+2024-10-28T07:25:10.198+0000    counted 500 documents in sample_training.posts
+2024-10-28T07:25:13.033+0000    [........................]  sample_training.posts  0/500  (0.0%)
+2024-10-28T07:25:16.033+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-28T07:25:19.033+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-28T07:25:22.033+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-28T07:25:25.034+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-28T07:25:28.034+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-28T07:25:31.034+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-28T07:25:34.033+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-28T07:25:37.033+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-28T07:25:40.033+0000    [####....................]  sample_training.posts  101/500  (20.2%)
+2024-10-28T07:25:40.322+0000    [########################]  sample_training.posts  500/500  (100.0%)
+2024-10-28T07:25:40.322+0000    MuxIn close sample_training.posts
+2024-10-28T07:25:40.323+0000    Mux close namespace sample_training.posts
+2024-10-28T07:25:40.323+0000    done dumping sample_training.posts (500 documents)
+2024-10-28T07:25:40.323+0000    ending dump routine with id=0, no more work to do
+2024-10-28T07:25:40.323+0000    dump phase III: the oplog
+2024-10-28T07:25:40.323+0000    finishing dump
+2024-10-28T07:25:40.323+0000    Mux finish
+2024-10-28T07:25:40.323+0000    mux completed successfully
+Primary Host : devops-mongodb-0.devops-mongodb-svc.mongodb.svc.cluster.local
+2024-10-28T07:25:41.738+0000    preparing collections to restore from
+2024-10-28T07:25:41.746+0000    reading metadata for sample_training.posts from archive on stdin
+2024-10-28T07:25:41.822+0000    restoring sample_training.posts from archive on stdin
+2024-10-28T07:25:43.189+0000    finished restoring sample_training.posts (500 documents, 0 failures)
+2024-10-28T07:25:43.189+0000    no indexes to restore for collection sample_training.posts
+2024-10-28T07:25:43.189+0000    500 document(s) restored successfully. 0 document(s) failed to restore.
 
 ~ took 47s
 ❯
+
+
+❯ kubectl run tmp-mongosh --image=rtsp/mongosh -n mongodb  --rm -it -- bash
+If you don't see a command prompt, try pressing enter.
+07:20:51 tmp-mongosh:/# mongosh mongodb://my-user:******@devops-mongodb-svc.mongodb.svc.cluster.local:40333
+
+devops-mongodb [direct: primary] sample_training> show dbs
+admin   188.00 KiB
+config  228.00 KiB
+local   165.88 MiB
+devops-mongodb [direct: primary] sample_training> show dbs
+admin            188.00 KiB
+config           240.00 KiB
+local            169.90 MiB
+sample_training    4.14 MiB
+devops-mongodb [direct: primary] sample_training>
 ```

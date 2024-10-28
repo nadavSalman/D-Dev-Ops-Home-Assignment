@@ -2,10 +2,12 @@ FROM node:23.1-slim
 
 WORKDIR /app
 
-COPY package.json /app
+COPY server-be/package.json /app
 
 RUN npm install
 
-COPY . /app
+COPY ./server-be /app
 
 CMD ["node", "app.js"]
+
+EXPOSE 5050

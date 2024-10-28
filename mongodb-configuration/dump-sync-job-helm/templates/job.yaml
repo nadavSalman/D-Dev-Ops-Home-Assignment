@@ -2,12 +2,14 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ .Values.job.name }}
+annotations:
+  "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   template:
     spec:
       restartPolicy: Never
       initContainers:
-      - name: init-load-data
+      - name: init
         image: rtsp/mongosh
         env:
         - name: ATLAS_URI
@@ -25,7 +27,7 @@ spec:
         - -c
         - |
           # dump
-          mongodump --uri "$ATLAS_URI" --db "sample_training" --collection "posts" --archive > db.dump
+          mongodump -vvvvv --uri "$ATLAS_URI" --db "sample_training" --collection "posts" --archive > db.dump
 
           # load
           export PRIMARY_HOST=$(mongosh "mongodb://my-user:$MONGODB_LOCAL_PASSWORD@devops-mongodb-svc.mongodb.svc.cluster.local:40333" --quiet --eval "rs.status()" --json | jq -r '.members[] | select(.stateStr == "PRIMARY") | .name' | cut -d':' -f1)
