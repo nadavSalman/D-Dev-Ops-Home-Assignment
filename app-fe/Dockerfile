@@ -2,12 +2,12 @@ FROM node:23.1-alpine
 
 WORKDIR /app
 
-COPY package.json ./
-COPY package-lock.json ./
+COPY app-fe/package.json /app
+COPY package-lock.json /app
 
 
 RUN npm install
 
-COPY ./ ./
+COPY ./app-fe /app
 
 CMD ["npm", "start"]
