@@ -1,0 +1,19 @@
+image:
+  repository: nadavdev/dropit-app-fe
+  pullPolicy: IfNotPresent
+  tag: "main"
+
+replicaCount: 2
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: posts-app.dropit.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific

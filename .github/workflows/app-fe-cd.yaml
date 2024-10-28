@@ -1,0 +1,22 @@
+name: CD app-fe
+
+on:
+    workflow_dispatch:
+
+jobs:
+  app-fe-cd:
+    runs-on: self-hosted 
+    env:
+        ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
+        ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
+        
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy Server BE 
+        env:
+          LOCAL_URI: ${{ secrets.LOCAL_URI }}
+        run: |
+            helm upgrade --install app-fe k8s-shared/ --values app-fe/deployment/prd-values.yaml 
+          
