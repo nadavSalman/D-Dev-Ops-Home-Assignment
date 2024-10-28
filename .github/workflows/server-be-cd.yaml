@@ -1,4 +1,4 @@
-name: Server BE DC
+name: CD server-be
 
 on:
     workflow_dispatch:
