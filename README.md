@@ -534,3 +534,25 @@ devops-mongodb [direct: primary] sample_training>
 
 
 ## Communication with the BE API (second part of the job task)
+
+The code for API communication can be found at: `mongodb-configuration/data-sync-app/`. The main entry point, `main.py`, uses a side module for input validation (`mongodb-configuration/data-sync-app/data_validator`) for new post documents (with schema). After the init container imports data from the external Atlas cluster, the main container runs Python code to perform the requested tasks.
+(Note the created file: `app-posts.csv`)
+```
+❯ k logs dump-sync-job-cgvvc -n mongodb
+Defaulted container "main" out of: main, init (init)
+(1) Schema Validation
+Post Document title  : Kuku-1-1cf89e8c-9797-4907-9271-193ffee56392
+Validation succeeded.
+(2) HTTP POST - Create new post documetn by communicating with the sever-BE app
+Error during the POST request: 404 Client Error: Not Found for url: http://server-be-k8s-shared.server-be.svc.cluster.local:5050/
+(3) HTTP GRT - Get all posts and save into svc file. For this example to test it, the file will beacssaberl via PV & pvs localstorage .
+Data saved successfully to /app/app-posts.csv
+Contents of /app:
+data_validator
+app-posts.csv
+.gitignore
+Dockerfile
+dump-restore.sh
+main.py
+requirements.txt
+```
