@@ -1,6 +1,5 @@
 # Dropit-Dev-Ops-Home-Assignment
 
-
 ![alt text](images/k8s-architecture.png)
 
 
