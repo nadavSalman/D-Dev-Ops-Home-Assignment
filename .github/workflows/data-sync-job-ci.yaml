@@ -1,4 +1,4 @@
-name: CI/CD data-sync-job
+name: CI data-sync-job
 
 on:
   push:

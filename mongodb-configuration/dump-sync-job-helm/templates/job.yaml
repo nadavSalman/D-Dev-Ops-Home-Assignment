@@ -38,5 +38,7 @@ spec:
       containers:
       - name: main
         image: {{ .Values.mainContainer.image }}:{{ .Values.mainContainer.tag }}
+        env:
+          {{- toYaml .Values.env | nindent 12 }}
         command: ["python", "main.py"]
   backoffLimit: 1

@@ -468,3 +468,67 @@ local            169.90 MiB
 sample_training    4.14 MiB
 devops-mongodb [direct: primary] sample_training>
 ```
+
+
+
+### Test data ingest with mongoshell :
+
+```sql
+devops-mongodb [direct: primary] sample_training> db.posts.insertOne({
+...     "author": "machine",
+...     "body": "Amendment I\n<p>Congress shall make no law respecting ...",
+...     "comments": [
+...         {
+...             "author": "Santiago Dollins",
+...             "body": "Lorem ipsum dolor sit amet, consectetur adipisicing...",
+...             "email": "HvizfYVx@pKvLaagH.com"
+...         },
+...         {
+...             "author": "Jaclyn Morado",
+...             "body": "Lorem ipsum dolor sit amet, consectetur adipisicing...",
+...             "email": "WpOUCpdD@hccdxJvT.com"
+...         }
+...     ],
+...     "date": new Date(),  
+...     "permalink": "aRjNnLZkJkTyspAIoRGe",
+...     "tags": ["watchmaker", "santa", "xylophone", "math", "handsaw", "dream", "undershirt", "dolphin", "tanker", "action"],
+...     "title": "Kuku-1"
+... })
+{
+  acknowledged: true,
+  insertedId: ObjectId('671ffb46013fe2289cfe6911')
+}
+devops-mongodb [direct: primary] sample_training> db.posts.findOne({ "title": "Kuku-1" })
+{
+  _id: ObjectId('671ffb46013fe2289cfe6911'),
+  author: 'machine',
+  body: 'Amendment I\n<p>Congress shall make no law respecting ...',
+  comments: [
+    {
+      author: 'Santiago Dollins',
+      body: 'Lorem ipsum dolor sit amet, consectetur adipisicing...',
+      email: 'HvizfYVx@pKvLaagH.com'
+    },
+    {
+      author: 'Jaclyn Morado',
+      body: 'Lorem ipsum dolor sit amet, consectetur adipisicing...',
+      email: 'WpOUCpdD@hccdxJvT.com'
+    }
+  ],
+  date: ISODate('2024-10-28T20:59:50.405Z'),
+  permalink: 'aRjNnLZkJkTyspAIoRGe',
+  tags: [
+    'watchmaker', 'santa',
+    'xylophone',  'math',
+    'handsaw',    'dream',
+    'undershirt', 'dolphin',
+    'tanker',     'action'
+  ],
+  title: 'Kuku-1'
+}
+devops-mongodb [direct: primary] sample_training>
+```
+
+
+
+## Communicate with the API (Second part of the Job task)

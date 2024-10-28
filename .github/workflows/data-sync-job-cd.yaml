@@ -1,4 +1,4 @@
-name: MongoDB Dump AND Sync K8s Job
+name: CD data-sync-job
 
 on:
     workflow_dispatch:

@@ -1,6 +1,6 @@
 image:
   repository: nadavdev/dropit-app-fe
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "main"
 
 replicaCount: 2

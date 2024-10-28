@@ -10,3 +10,9 @@ job:
 mainContainer:
   image: nadavdev/dropit-data-sync-job
   tag: "main"  
+
+
+
+env:
+  - name: SERVER_BE_ENDPOINT 
+    value: "server-be-k8s-shared.server-be.svc.cluster.local:5050"
