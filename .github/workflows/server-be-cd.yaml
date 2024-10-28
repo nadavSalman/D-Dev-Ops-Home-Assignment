@@ -21,5 +21,5 @@ jobs:
           helm upgrade --install server-be k8s-shared/ \
             --values server-be/deployment/prd-values.yaml \
             --set env[0].name=LOCAL_URI \
-            --set env[0].value=LOCAL_URI \
+            --set env[0].value=$LOCAL_URI \
             -n server-be
