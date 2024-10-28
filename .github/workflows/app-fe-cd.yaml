@@ -18,5 +18,5 @@ jobs:
         env:
           LOCAL_URI: ${{ secrets.LOCAL_URI }}
         run: |
-            helm upgrade --install app-fe k8s-shared/ --values app-fe/deployment/prd-values.yaml 
+            helm upgrade --install app-fe k8s-shared/ --values app-fe/deployment/prd-values.yaml -n app-fe
           
