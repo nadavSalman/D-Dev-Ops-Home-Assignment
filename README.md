@@ -12,6 +12,8 @@ Prerequisite
     - Setup [kind cluster with Ingress Controller](https://kind.sigs.k8s.io/docs/user/ingress/), chose Nginx. (There is a GitHub flow after settign self hosted agent)
 - **Optinal** - [Install cilium cli](https://docs.cilium.io/en/stable/installation/kind/) 
 
+GitHub Actions Workflow for Managing Infrastructure Components and Microservices CI/CD
+![alt text](images/action-flows.png)
 
 ## Import Mising Post db data (`sample_training.posts`)
 
@@ -531,4 +533,4 @@ devops-mongodb [direct: primary] sample_training>
 
 
 
-## Communicate with the API (Second part of the Job task)
+## Communication with the BE API (second part of the job task)
