@@ -300,7 +300,7 @@ Primary host: devops-mongodb-1.devops-mongodb-svc.mongodb.svc.cluster.local
 Load data : `mongodump` - `mongorestore` (`K8s Pod`)
 ```bash
 ❯ k run tmp-mongosh --image=rtsp/mongosh -n mongodb  --rm -it -- bash
-19:44:55 tmp-mongosh:/# mongodump --uri "mongodb+srv://nadavdevops:13k6WO3uxLmG6xxe@cluster01.sv6iv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01" --db "sample_training" --collection "posts" --archive > db.dump
+19:44:55 tmp-mongosh:/# mongodump --uri "mongodb+srv://nadavdevops:***@cluster01.sv6iv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01" --db "sample_training" --collection "posts" --archive > db.dump
 2024-10-27T19:45:09.834+0000    writing sample_training.posts to archive on stdout
 2024-10-27T19:45:12.649+0000    [........................]  sample_training.posts  0/500  (0.0%)
 2024-10-27T19:45:15.649+0000    [........................]  sample_training.posts  0/500  (0.0%)
@@ -356,18 +356,18 @@ dr-xr-xr-x  11 root root    0 2024-10-27 19:44 sys/
 drwxrwxrwt   2 root root 4.0K 2024-09-26 00:00 tmp/
 drwxr-xr-x   1 root root 4.0K 2024-09-26 00:00 usr/
 drwxr-xr-x   1 root root 4.0K 2024-09-26 00:00 var/
-19:47:28 tmp-mongosh:/# export PRIMARY_HOST=$(mongosh "mongodb://my-user:Q1w2e3r4t5y6@devops-mongodb-svc.mongodb.svc.cluster.local:40333" --quiet --eval "rs.status()" --json | jq -r '.memb
+19:47:28 tmp-mongosh:/# export PRIMARY_HOST=$(mongosh "mongodb://my-user:******@devops-mongodb-svc.mongodb.svc.cluster.local:40333" --quiet --eval "rs.status()" --json | jq -r '.memb
 ers[] | select(.stateStr == "PRIMARY") | .name' | cut -d':' -f1)
 19:48:43 tmp-mongosh:/# echo $PRIMARY_HOST
 devops-mongodb-2.devops-mongodb-svc.mongodb.svc.cluster.local
-19:48:50 tmp-mongosh:/# mongorestore --uri "mongodb://my-user:Q1w2e3r4t5y6@$PRIMARY_HOST:40333" --archive < db.dump
+19:48:50 tmp-mongosh:/# mongorestore --uri "mongodb://my-user:******@$PRIMARY_HOST:40333" --archive < db.dump
 2024-10-27T19:49:25.011+0000    preparing collections to restore from
 2024-10-27T19:49:25.019+0000    reading metadata for sample_training.posts from archive on stdin
 2024-10-27T19:49:25.125+0000    restoring sample_training.posts from archive on stdin
 2024-10-27T19:49:26.528+0000    finished restoring sample_training.posts (500 documents, 0 failures)
 2024-10-27T19:49:26.529+0000    no indexes to restore for collection sample_training.posts
 2024-10-27T19:49:26.529+0000    500 document(s) restored successfully. 0 document(s) failed to restore.
-19:49:26 tmp-mongosh:/# mongosh  "mongodb://my-user:Q1w2e3r4t5y6@$PRIMARY_HOST:40333"
+19:49:26 tmp-mongosh:/# mongosh  "mongodb://my-user:******@$PRIMARY_HOST:40333"
 Current Mongosh Log ID: 671e995d2e5efee918fe6910
 Connecting to:          mongodb://<credentials>@devops-mongodb-2.devops-mongodb-svc.mongodb.svc.cluster.local:40333/?directConnection=true&appName=mongosh+2.3.2
 Using MongoDB:          6.0.5
