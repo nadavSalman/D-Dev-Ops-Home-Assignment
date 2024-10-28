@@ -1,0 +1,14 @@
+image:
+  repository: nadavdev/dropit-server-be
+  pullPolicy: IfNotPresent
+  tag: "main"
+
+replicaCount: 2
+
+service:
+  type: ClusterIP
+  port: 5050
+
+env:
+  - name: LOCAL_URI 
+    value: ""

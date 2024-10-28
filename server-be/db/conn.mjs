@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-const connectionString = process.env.ATLAS_URI || "";
+const connectionString = process.env.LOCAL_URI || "";
 
 const client = new MongoClient(connectionString);
 

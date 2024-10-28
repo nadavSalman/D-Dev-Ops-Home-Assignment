@@ -59,6 +59,9 @@ jobs:
   cluster-provisioning:
     needs: create-cluster  # This makes the job dependent on create-cluster
     runs-on: self-hosted
+    env:
+      ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
+      ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

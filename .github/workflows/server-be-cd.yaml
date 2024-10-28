@@ -1,0 +1,27 @@
+name: Server BE DC
+
+on:
+    workflow_dispatch:
+
+jobs:
+  mongodb-dump-data:
+    runs-on: self-hosted 
+    env:
+        ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
+        ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
+        
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Server BE 
+        env:
+          LOCAL_URI: ${{ secrets.LOCAL_URI }}
+        run: |
+          helm upgrade --install server-be k8s-shared/ \
+            --values server-be/deployment/prd-values.yaml \
+            --set env[0].name=LOCAL_URI \
+            --set env[0].value=LOCAL_URI
+
+
+
