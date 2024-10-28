@@ -7,7 +7,7 @@ replicaCount: 2
 
 service:
   type: ClusterIP
-  port: 3000
+  port: 80
 
 ingress:
   enabled: true
@@ -17,3 +17,8 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
+
+
+env:
+  - name: REACT_APP_OPENSSL_LEGACY_PROVIDER 
+    value: "false"

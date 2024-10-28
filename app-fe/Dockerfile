@@ -1,13 +1,18 @@
-FROM node:18-alpine
+# FROM node:18-alpine
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY app-fe/package.json /app
-COPY app-fe/package-lock.json /app
+# COPY app-fe/package.json /app
+# COPY app-fe/package-lock.json /app
 
 
-RUN npm install
+# RUN npm install
 
-COPY ./app-fe /app
+# COPY ./app-fe /app
 
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
+
+
+FROM nginx:stable-alpine
+
+COPY build/ /usr/share/nginx/html 
