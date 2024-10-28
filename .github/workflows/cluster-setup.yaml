@@ -6,9 +6,14 @@ on:
 jobs:
   create-cluster:
     runs-on: self-hosted  
+    env:
+      ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
+      ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
 
       - name: Validate current context and create cluster if needed
         run: |
@@ -32,7 +37,7 @@ jobs:
               exit 1
           fi 
 
-      - name: Install Cilium
+      - name: Install Cilium
         run: |
           helm repo add cilium https://helm.cilium.io/
           docker pull quay.io/cilium/cilium:v1.16.3
