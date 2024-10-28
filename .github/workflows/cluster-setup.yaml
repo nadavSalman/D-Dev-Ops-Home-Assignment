@@ -63,6 +63,19 @@ jobs:
           kubectl get namespace ingress-nginx || kubectl create namespace ingress-nginx
           kubectl apply -f cluster-provisioning/ingress-controller/kind-nginx-ingress-controller.yaml
 
+      - name: Create Dev Namespaces
+        run: |
+          namespaces=("app-fe" "server-be")  
+
+          for ns in "${namespaces[@]}"; do
+            if kubectl get namespace "$ns" >/dev/null 2>&1; then
+              echo "Namespace '$ns' already exists."
+            else
+              echo "Creating namespace: $ns"
+              kubectl create namespace "$ns"
+            fi
+          done
+
       - name: Install MongoDB Community Operator
         run: |
           kubectl get namespace mongodb || kubectl create namespace mongodb
@@ -77,15 +90,8 @@ jobs:
           helm template   mongodb-community  mongodb-configuration/mongodb-community-setup/ -n mongodb
           helm upgrade --install  mongodb-community  mongodb-configuration/mongodb-community-setup/ -n mongodb
 
-      - name: Create Dev Namespaces
+      - name: Deploy and Configure a MongoDB Resource
         run: |
-          namespaces=("app-fe" "server-be")  
-
-          for ns in "${namespaces[@]}"; do
-            if kubectl get namespace "$ns" >/dev/null 2>&1; then
-              echo "Namespace '$ns' already exists."
-            else
-              echo "Creating namespace: $ns"
-              kubectl create namespace "$ns"
-            fi
-          done
+          kubectl  get secret my-user-password  --namespace=mongodb -o yaml | \
+          yq 'del(.metadata.creationTimestamp, .metadata.uid, .metadata.resourceVersion, .metadata.namespace)' | \
+          kubectl apply --namespace=server-be -f -
