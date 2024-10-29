@@ -51,7 +51,7 @@ def main():
     headers = {"Content-Type": "application/json"}
 
     try:
-        post_response = requests.post(post_url, json=post_data, headers=headers)
+        post_response = requests.post(url, json=post_data, headers=headers)
         post_response.raise_for_status() 
 
         print("New post document created successfully:", post_response.json())
