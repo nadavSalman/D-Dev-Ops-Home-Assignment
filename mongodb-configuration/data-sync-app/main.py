@@ -9,6 +9,7 @@ from data_validator.validate import DataValidator
 def main():
     # Check if LOCAL_URI environment variable is set
     server_be_endpoint = os.getenv("SERVER_BE_ENDPOINT")
+    url = f"{server_be_endpoint}/posts"
     
     if not server_be_endpoint:
         print("Error: SERVER_BE_ENDPOINT environment variable is not configured.")
@@ -47,7 +48,6 @@ def main():
     #(2) HTTP POST - Create new post documetn by communicating with the sever-BE app
     print('(2) HTTP POST - Create new post documetn by communicating with the sever-BE app')
 
-    post_url = f"{server_be_endpoint}/"
     headers = {"Content-Type": "application/json"}
 
     try:
@@ -62,7 +62,7 @@ def main():
     #(3) HTTP GRT - Get all posts and save into svc file. For this example to test it, the file will beacssaberl via PV & pvs localstorage . 
     print('(3) HTTP GRT - Get all posts and save into svc file. For this example to test it, the file will beacssaberl via PV & pvs localstorage . ')
 
-    url = f"{server_be_endpoint}/posts"
+    
 
     try:
         response = requests.get(url)

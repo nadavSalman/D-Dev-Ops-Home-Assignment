@@ -534,6 +534,38 @@ devops-mongodb [direct: primary] sample_training>
 
 ## Communication with the BE API (second part of the job task)
 
+
+Test from curl pod :
+```
+ kubectl run mycurlpod --image=curlimages/curl -i --tty -- sh
+If you don't see a command prompt, try pressing enter.
+~ $ 
+~ $ curl -X POST "http://server-be-k8s-shared.server-be.svc.cluster.local:5050/posts" \
+> -H "Content-Type: application/json" \
+> -d '{
+>     "author": "machine",
+>     "body": "Amendment I\n<p>Congress shall make no law respecting ...",
+>     "comments": [
+>         {
+>             "author": "Santiago Dollins",
+>             "body": "Lorem ipsum dolor sit amet, consectetur adipisicing...",
+>             "email": "HvizfYVx@pKvLaagH.com"
+>         },
+>         {
+>             "author": "Jaclyn Morado",
+>             "body": "Lorem ipsum dolor sit amet, consectetur adipisicing...",
+>             "email": "WpOUCpdD@hccdxJvT.com"
+>         }
+>     ],
+>     "date": "'$(date +%Y-%m-%dT%H:%M:%S%z)'",
+>     "permalink": "aRjNnLZkJkTyspAIoRGe",
+>     "tags": ["watchmaker", "santa", "xylophone", "math", "handsaw", "dream", "undershirt", "dolphin", "tanker", "action"],
+>     "title": "Kuku-1-<UUID>"
+> }'
+{"acknowledged":true,"insertedId":"67207d23f1b644ec10b0e07a"}~ $
+~ $
+```
+
 The code for API communication can be found at: `mongodb-configuration/data-sync-app/`. The main entry point, `main.py`, uses a side module for input validation (`mongodb-configuration/data-sync-app/data_validator`) for new post documents (with schema). After the init container imports data from the external Atlas cluster, the main container runs Python code to perform the requested tasks.
 (Note the created file: `app-posts.csv`)
 ```
