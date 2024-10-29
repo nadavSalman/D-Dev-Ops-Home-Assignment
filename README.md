@@ -567,16 +567,18 @@ If you don't see a command prompt, try pressing enter.
 ```
 
 The code for API communication can be found at: `mongodb-configuration/data-sync-app/`. The main entry point, `main.py`, uses a side module for input validation (`mongodb-configuration/data-sync-app/data_validator`) for new post documents (with schema). After the init container imports data from the external Atlas cluster, the main container runs Python code to perform the requested tasks.
+You can see the query for testing that a new socument created at the end.
 (Note the created file: `app-posts.csv`)
 ```
-❯ k logs dump-sync-job-cgvvc -n mongodb
+Dropit-Dev-Ops-Home-Assignment on  main 
+❯ k logs  dump-sync-job-hsm2l -n mongodb 
 Defaulted container "main" out of: main, init (init)
 (1) Schema Validation
-Post Document title  : Kuku-1-1cf89e8c-9797-4907-9271-193ffee56392
+Post Document title  : Kuku-1-2dc65df3-a0e6-4413-bf47-b37cd4d3279b
 Validation succeeded.
 (2) HTTP POST - Create new post documetn by communicating with the sever-BE app
-Error during the POST request: 404 Client Error: Not Found for url: http://server-be-k8s-shared.server-be.svc.cluster.local:5050/
-(3) HTTP GRT - Get all posts and save into svc file. For this example to test it, the file will beacssaberl via PV & pvs localstorage .
+New post document created successfully: {'acknowledged': True, 'insertedId': '67208b51f1b644ec10b0e07b'}
+(3) HTTP GRT - Get all posts and save into svc file. For this example to test it, the file will beacssaberl via PV & pvs localstorage . 
 Data saved successfully to /app/app-posts.csv
 Contents of /app:
 data_validator
@@ -586,4 +588,62 @@ Dockerfile
 dump-restore.sh
 main.py
 requirements.txt
+
+Dropit-Dev-Ops-Home-Assignment on  main 
+❯ kubectl run tmp-mongosh --image=rtsp/mongosh -n mongodb  --rm -it -- bash
+pod "tmp-mongosh" deleted
+error: timed out waiting for the condition
+
+Dropit-Dev-Ops-Home-Assignment on  main took 1m 
+❯ kubectl run tmp-mongosh --image=rtsp/mongosh -n mongodb  --rm -it -- bash
+08:17:13 tmp-mongosh:/# mongosh mongodb://my-user:***@devops-mongodb-svc.mongodb.svc.cluster.local:40333
+Current Mongosh Log ID: 67209a270c62b29f33fe6910
+Connecting to:          mongodb://<credentials>@devops-mongodb-svc.mongodb.svc.cluster.local:40333/?directConnection=true&appName=mongosh+2.3.2
+Using MongoDB:          6.0.5
+Using Mongosh:          2.3.2
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+To help improve our products, anonymous usage data is collected and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+
+------
+   The server generated these startup warnings when booting
+   2024-10-29T06:08:35.596+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2024-10-29T06:08:37.045+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+   2024-10-29T06:08:37.045+00:00: vm.max_map_count is too low
+------
+
+devops-mongodb [direct: secondary] test> use sample_training
+switched to db sample_training
+devops-mongodb [direct: secondary] sample_training> db.posts.findOne({ "title": "Kuku-1-2dc65df3-a0e6-4413-bf47-b37cd4d3279b" })
+{
+  _id: ObjectId('67208b51f1b644ec10b0e07b'),
+  author: 'machine',
+  body: 'Amendment I\n<p>Congress shall make no law respecting ...',
+  comments: [
+    {
+      author: 'Santiago Dollins',
+      body: 'Lorem ipsum dolor sit amet, consectetur adipisicing...',
+      email: 'HvizfYVx@pKvLaagH.com'
+    },
+    {
+      author: 'Jaclyn Morado',
+      body: 'Lorem ipsum dolor sit amet, consectetur adipisicing...',
+      email: 'WpOUCpdD@hccdxJvT.com'
+    }
+  ],
+  date: ISODate('2024-10-29T07:14:25.063Z'),
+  permalink: 'aRjNnLZkJkTyspAIoRGe',
+  tags: [
+    'watchmaker', 'santa',
+    'xylophone',  'math',
+    'handsaw',    'dream',
+    'undershirt', 'dolphin',
+    'tanker',     'action'
+  ],
+  title: 'Kuku-1-2dc65df3-a0e6-4413-bf47-b37cd4d3279b'
+}
+devops-mongodb [direct: secondary] sample_training>
 ```
